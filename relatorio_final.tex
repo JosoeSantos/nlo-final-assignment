@@ -54,8 +54,125 @@ Josoé Santos Queiroz — 2019026982
 
 
 
-\section{Problema 1}
-\section{Problema 2}
+\section{Problema 1: Treliça de Três Barras}
+
+O objetivo do problema de otimização restrita é minimizar o gasto de material de uma treliça de três barras. Sendo que $x_1 = A_1$ é a área da seção transversal das barras laterais e $x_2 = A_2$ é a área da seção transversal da barra central.
+
+A função objetivo representa o volume total (ou peso, proporcional ao comprimento) das barras:
+
+\begin{equation}
+    \min f(x_1, x_2) = (2\sqrt{2})x_1 + x_2
+\end{equation}
+
+As restrições impostas ao problema são baseadas nos limites de estresse e dimensões físicas:
+
+1. Estresse máximo das barras 1 e 2:
+
+\begin{equation}
+    P \frac{x_2 + x_1 \sqrt{2}}{x_1^2 \sqrt{2} + 2x_1 x_2} \leq 20
+\end{equation}
+
+\begin{equation}
+    P \frac{1}{x_1 + x_2 \sqrt{2}} \leq 20
+\end{equation}
+
+2. Estresse mínimo para a barra 3:
+
+\begin{equation}
+    -P \frac{x_2}{x_1^2 \sqrt{2} + 2x_1 x_2} \leq -5
+\end{equation}
+
+3. Limites de tamanho para as barras:
+
+\begin{// filepath: c:\Users\User\OneDrive\Documentos\GitHub\nlo-final-assignment\relatorio_final.tex
+// ...existing code...
+\section{Introdução}
+
+
+
+\section{Problema 1: Treliça de Três Barras}
+
+O objetivo do problema de otimização restrita é minimizar o gasto de material de uma treliça de três barras. Sendo que $x_1 = A_1$ é a área da seção transversal das barras laterais e $x_2 = A_2$ é a área da seção transversal da barra central.
+
+A função objetivo representa o volume total (ou peso, proporcional ao comprimento) das barras:
+
+\begin{equation}
+    \min f(x_1, x_2) = (2\sqrt{2})x_1 + x_2
+\end{equation}
+
+As restrições impostas ao problema são baseadas nos limites de estresse e dimensões físicas:
+
+1. Estresse máximo das barras 1 e 2:
+
+\begin{equation}
+    P \frac{x_2 + x_1 \sqrt{2}}{x_1^2 \sqrt{2} + 2x_1 x_2} \leq 20
+\end{equation}
+
+\begin{equation}
+    P \frac{1}{x_1 + x_2 \sqrt{2}} \leq 20
+\end{equation}
+
+2. Estresse mínimo para a barra 3:
+
+\begin{equation}
+    -P \frac{x_2}{x_1^2 \sqrt{2} + 2x_1 x_2} \leq -5
+\end{equation}
+
+3. Limites de tamanho para as barras:
+
+\begin{equation}
+    0.1 \leq x_1, x_2 \leq 5
+\end{equation}
+
+Onde a carga aplicada é $P = 10$.
+
+
+\section{Problema 2: Despacho Econômico de Energia}
+O problema consiste em determinar a distribuição ótima de geração entre as unidades geradoras disponíveis para atender à demanda de energia elétrica ao menor custo possível.
+
+A função objetivo é minimizar o custo total de geração:
+
+\begin{equation}
+    \min f(P_1, P_2, P_3) = C_1(P_1) + C_2(P_2) + C_3(P_3)
+\end{equation}
+
+Onde as curvas de custo são dadas por:
+
+\begin{align*}
+    C_1(P_1) &= 0.15 P_1^2 + 38 P_1 + 756 \\
+    C_2(P_2) &= 0.1 P_2^2 + 46 P_2 + 451 \\
+    C_3(P_3) &= 0.25 P_3^2 + 40 P_3 + 1049
+\end{align*}
+
+Sujeito à restrição de balanço de potência (igualdade):
+
+\begin{equation}
+    P_1 + P_2 + P_3 = 850 + P_L
+\end{equation}
+
+Onde $P_L$ é a perda na transmissão:
+
+\begin{equation}
+    P_L = \sum_{i=1}^3 \sum_{j=1}^3 P_i B_{ij} P_j
+\end{equation}
+
+Com a matriz de coeficientes de perda $B$:
+
+\begin{equation}
+    B = \begin{bmatrix}
+    0.000049 & 0.000014 & 0.000015 \\
+    0.000014 & 0.000045 & 0.000016 \\
+    0.000015 & 0.000016 & 0.000039
+    \end{bmatrix}
+\end{equation}
+
+E as restrições de capacidade (desigualdades):
+
+\begin{align*}
+    150 &\leq P_1 \leq 600 \\
+    100 &\leq P_2 \leq 400 \\
+    50 &\leq P_3 \leq 200
+\end{align*}
 
 
 
