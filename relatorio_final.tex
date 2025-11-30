@@ -65,45 +65,6 @@ O \textit{método de Penalidade Interior (Barreira)} atua de forma inversa: impe
 O \textit{método do Lagrangeano Aumentado} combina a ideia dos multiplicadores de Lagrange com termos de penalidade suavizados, evitando o mal-condicionamento típico dos métodos de penalidade pura. Ele permite convergência estável mesmo com pontos iniciais inviáveis e é considerado o método mais robusto entre os três
 
 
-
-
-
-\section{Problema 1: Treliça de Três Barras}
-
-O objetivo do problema de otimização restrita é minimizar o gasto de material de uma treliça de três barras. Sendo que $x_1 = A_1$ é a área da seção transversal das barras laterais e $x_2 = A_2$ é a área da seção transversal da barra central.
-
-A função objetivo representa o volume total (ou peso, proporcional ao comprimento) das barras:
-
-\begin{equation}
-    \min f(x_1, x_2) = (2\sqrt{2})x_1 + x_2
-\end{equation}
-
-As restrições impostas ao problema são baseadas nos limites de estresse e dimensões físicas:
-
-1. Estresse máximo das barras 1 e 2:
-
-\begin{equation}
-    P \frac{x_2 + x_1 \sqrt{2}}{x_1^2 \sqrt{2} + 2x_1 x_2} \leq 20
-\end{equation}
-
-\begin{equation}
-    P \frac{1}{x_1 + x_2 \sqrt{2}} \leq 20
-\end{equation}
-
-2. Estresse mínimo para a barra 3:
-
-\begin{equation}
-    -P \frac{x_2}{x_1^2 \sqrt{2} + 2x_1 x_2} \leq -5
-\end{equation}
-
-3. Limites de tamanho para as barras:
-
-\begin{// filepath: c:\Users\User\OneDrive\Documentos\GitHub\nlo-final-assignment\relatorio_final.tex
-// ...existing code...
-\section{Introdução}
-
-
-
 \section{Problema 1: Treliça de Três Barras}
 
 O objetivo do problema de otimização restrita é minimizar o gasto de material de uma treliça de três barras. Sendo que $x_1 = A_1$ é a área da seção transversal das barras laterais e $x_2 = A_2$ é a área da seção transversal da barra central.
@@ -136,10 +97,108 @@ As restrições impostas ao problema são baseadas nos limites de estresse e dim
 
 \begin{equation}
     0.1 \leq x_1, x_2 \leq 5
+    \label{eq:p1_limits}
 \end{equation}
 
-Onde a carga aplicada é $P = 10$.
+Onde a carga aplicada é $P = 20$.
 
+O espaço de soluções e o ponto inicial sugerido $\mathbf{x} = [1, 3]^T$ foi
+plotado na figura, os limites de $x_1$ e $x_2$ na figura são os mesmos da restrição
+\eqref{eq:p1_limits}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.6\textwidth]{./img/domain_p1.png}
+\caption{Espaço de soluções do problema da treliça de três barras.}
+\label{fig:p1_sol_space}
+\end{figure}
+
+\subsection{Resultados}
+
+A otimização foi feita usando os métodos de busca restrita de Penalidade Exterior
+Penalidade Interior e Lagrangeano Aumentado. 
+Inicialmente todos os métodos foram configurados com busca unidimensional por 
+Seção Áurea (precisão $10^{-6}$), método do Gradiente como solucionador irrestrito e 
+chute inicial $\mathbf{x_0} = [1, 3]^T$. O método das penalidades interiores 
+não convergiu para o dado problema, contudo os outros solucionadores sim. As soluções obtidas estão resumidas
+na tabela \ref{table:first_results}.
+
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrrr}
+\hline
+ Método                &      $x_1$ &      $x_2$ &   $f(x_1, x_2)$ &   Iterações &   Avaliações \\
+\hline
+ Penalidade Exterior   & 0.786953 & 0.407355 &       2.63607 &           2 &        13072 \\
+ Penalidade Interior   & 1        & 3        &       5.82843 &           0 &         1788 \\
+ Lagrangeano Aumentado & 0.787597 & 0.407673 &       2.63804 &           2 &        13178 \\
+\hline
+\end{tabular}
+\caption{Resultados iniciais para $\mathbf{x} = [1, 3]^T$}
+\label{table:first_results}
+\end{table}
+
+
+A não convergência do método de penalidade interior é facilmente explicada pela 
+natureza do algorítimo: O ponto inicial do problema deve estar dentro da região 
+factível e a busca pela solução deve desacelerar ao se aproximar das bordas 
+do politopo. Para isso fizemos uma visualização do comportamento do método ao passo
+de que ajustamos as penalidades, a desaceleração e a velocidade de aceleração do
+método irrestrito. A figura \ref{fig:interior_penalty} mostra o comportamento do método
+de penalidade interior para diferentes configurações de penalidade e aceleração.
+Foi a partir dessa análise que escolhemos os valores de penalidade e aceleração que
+resultaram na melhor aproximação da solução ótima mostrada na tabela \ref{table:interior_results}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{./img/comparacao_internas.png}
+\caption{Comportamento do método de penalidade interior para diferentes configurações.}
+\label{fig:interior_penalty}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrrr}
+\hline
+ Método                &      $x_1$ &      $x_2$ &   $f(x_1, x_2)$ &   Iterações &   Avaliações \\
+\hline
+ Penalidade Interior   & 0.77788201 & 0.47797759 &       2.7267 &           8 &        11191 \\
+\hline
+\end{tabular}
+\caption{Resultados finais para $\mathbf{x} = [1, 3]^T$}
+\label{table:interior_results}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rrr}
+\hline
+ Aceleração mono-objetivo                &  Penalidade & Desaceleração    \\
+\hline
+ 1.3   & 6 & 0.4  \\
+\hline
+\end{tabular}
+\caption{Parâmetros escolhidos para o método de penalidade interior.}
+\label{table:interior_params}
+\end{table}
+
+Nesse experimento foi possível observar que o método de penalidade interior é sensível
+a diversos ajustes de parâmetros. O que o torna menos robusto que os outros métodos
+testados. Além disso a convergência do método foi mais lenta que a dos outros métodos e
+sua precisão foi menor. Esse fato pode ser explicado pelo uso de uma função barreira
+que se assemelha com uma potência negativa, o que distâcia o mínimo da função objetivo
+modificada do mínimo da função original. A figura \ref{fig:final_results} 
+mostra a comparação dos ótimos encontrados pelos métodos de penalidade exterior e lagrangeano Aumentado
+contra a solução do método de penalidades interiores.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.6\textwidth]{./img/comp_resultados.png}
+\caption{Comparação dos resultados finais dos métodos testados.}
+\label{fig:final_results}    
+\end{figure}
 
 \section{Problema 2: Despacho Econômico de Energia}
 O problema consiste em determinar a distribuição ótima de geração entre as unidades geradoras disponíveis para atender à demanda de energia elétrica ao menor custo possível.
@@ -209,6 +268,15 @@ A Penalidade Exterior atingiu o ponto ótimo em 20 iterações, enquanto o Lagra
 
 
 \section{Conclusão}
+
+Este trabalho explorou métodos clássicos de otimização não linear com restrições. 
+A comparação dos métodos comportamentos e soluções obtidas evidenciou as vantagens
+e limitações de cada abordagem. Foi possível observar a eficiência do método do
+Lagrangeano Aumentado em termos de convergência e robustez, especialmente em
+problemas com múltiplas restrições. O método de penalidade exterior mostrou-se simples
+e eficaz, embora sensível à escolha dos parâmetros de penalidade. Já o método de
+penalidade interior apresentou desafios de convergência, destacando a importância
+de um ponto inicial factível e do ajuste cuidadoso dos parâmetros.
 
 \bibliographystyle{plain}
 \bibliography{references}

@@ -8,3 +8,5 @@ wheels/
 
 # Virtual environments
 .venv
+relatorio_final*
+!relatorio_final.tex
