@@ -52,6 +52,20 @@ Josoé Santos Queiroz — 2019026982
 
 \section{Introdução}
 
+Problemas de otimização com restrições aparecem em diversas áreas da engenharia, especialmente quando é necessário buscar a melhor solução possível sem violar limites físicos, de segurança ou de operação. Neste trabalho, estudamos três métodos numéricos amplamente utilizados para resolver esse tipo de problema: \textit{Penalidade Interior}, \textit{Penalidade Exterior} e \textit{Lagrangeano Aumentado}. A aplicação prática é feita em dois cenários distintos: o problema estrutural da treliça de três barras e o problema de despacho econômico em sistemas de potência. O objetivo é comparar o desempenho dos métodos, analisar sua convergência e discutir suas vantagens e limitações ao tratar restrições de desigualdade e igualdade.
+
+\section{Revisão da Literatura}
+
+A otimização não linear com restrições é tradicionalmente tratada convertendo-se o problema original em uma sequência de problemas irrestritos, resolvidos com métodos de busca desenvolvidos para otimização sem restrições. Segundo a literatura clássica de otimização \cite{rao2019}, os métodos de penalidade e barreira foram os primeiros a propor essa estratégia, adicionando termos de penalização à função objetivo para forçar o atendimento das restrições.
+
+O \textit{método de Penalidade Exterior} penaliza soluções inviáveis adicionando termos quadráticos que crescem rapidamente quando há violação das restrições. Ele é simples de implementar, porém sofre com mal-condicionamento numérico quando o parâmetro de penalidade se torna muito grande, o que limita a precisão final.
+
+O \textit{método de Penalidade Interior (Barreira)} atua de forma inversa: impede o algoritmo de sair da região viável por meio de funções barreira que divergem ao se aproximar da fronteira das restrições. Esse método aproxima a solução sempre pelo interior do conjunto viável, mas não funciona para restrições de igualdade e também apresenta sensibilidade quando o parâmetro tende a zero.
+
+O \textit{método do Lagrangeano Aumentado} combina a ideia dos multiplicadores de Lagrange com termos de penalidade suavizados, evitando o mal-condicionamento típico dos métodos de penalidade pura. Ele permite convergência estável mesmo com pontos iniciais inviáveis e é considerado o método mais robusto entre os três
+
+
+
 
 
 \section{Problema 1: Treliça de Três Barras}
